@@ -7,6 +7,6 @@
     <title>Home</title>
 </head>
 <body>
-    <h1><a href="home" >Practice 2023</a> </h1>
+    <h1><a href="/" >Practice 2023</a> </h1>
 </body>
 </html>
