@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Profile\AvatarController;
+use App\Http\Controllers\TicketController;
 
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
@@ -41,6 +42,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/profile/avatar/ai', [AvatarController::class, 'generate'])->name('profile.avatar.ai');
 
+    Route::resource('ticket', TicketController::class);
+   // Route::get('ticket/create', [TicketController::class, 'create'])->name('ticket.create');
+   // Route::post('ticket/create', [TicketController::class, 'store'])->name('ticket.store');
+
 });
 
 require __DIR__.'/auth.php';
@@ -72,3 +77,5 @@ Route::get('/auth/callback', function () {
     //dd($githubUser);
     // $user->token
 });
+
+
