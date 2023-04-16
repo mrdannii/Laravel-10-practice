@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\TicketStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateTicketRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class UpdateTicketRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +25,10 @@ class UpdateTicketRequest extends FormRequest
     {
         return [
             //
+            'title' => ['string', 'max:255'],
+            'description' => ['string'],
+            'attachment' => ['sometimes', 'file', 'mimes:png,jpg,jpeg'],
+            'statue' => ['string', Rule::in(array_column(TicketStatus::cases(), 'value'))],
         ];
     }
 }

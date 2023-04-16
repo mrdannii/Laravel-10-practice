@@ -18,36 +18,34 @@ class AvatarController extends Controller
 {
     public function update(UpdateAvatarRequest $request)
     {
-       if($oldavatar = $request->user()->avatar)
-       {
+        if ($oldavatar = $request->user()->avatar) {
             Storage::disk('public')->delete($oldavatar);
-       }
-            $path = Storage::disk('public')->put('avatars',$request->file('avatar'));
-       //  $path = $request->file('avatar')->store('avatars','public');
-       Auth::user()->update(['avatar'=>$path]);
+        }
+        $path = Storage::disk('public')->put('avatars', $request->file('avatar'));
+        //  $path = $request->file('avatar')->store('avatars','public');
+        Auth::user()->update(['avatar' => $path]);
         return redirect('/profile')->with('status', 'avatar-updated');
     }
 
     public function generate(Request $request)
     {
-       
-       
+
+
         $result = OpenAI::images()->create([
-            "prompt"=> "create avatar for user Profile animated related to tech",
-          "n"=> 1,
-          "size"=> "256x256"
+            "prompt" => "create avatar for user Profile animated related to tech",
+            "n" => 1,
+            "size" => "256x256"
         ]);
 
-        if($oldavatar = $request->user()->avatar)
-        {
-             Storage::disk('public')->delete($oldavatar);
+        if ($oldavatar = $request->user()->avatar) {
+            Storage::disk('public')->delete($oldavatar);
         }
-        $content=file_get_contents($result->data[0]->url);
-        $filename= Str::random(25);
-        Storage::disk('public')->put("avatars/$filename.jpg",$content);
-       
+        $content = file_get_contents($result->data[0]->url);
+        $filename = Str::random(25);
+        Storage::disk('public')->put("avatars/$filename.jpg", $content);
 
-        Auth::user()->update(['avatar'=>"avatars/$filename.jpg"]);
+
+        Auth::user()->update(['avatar' => "avatars/$filename.jpg"]);
 
 
         return redirect('/profile')->with('status', 'avatar-generated');

@@ -11,7 +11,7 @@ class StoreTicketRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +23,9 @@ class StoreTicketRequest extends FormRequest
     {
         return [
             //
+            'title'=> ['required','string', 'max:255'],
+            'description'=>['required','string'],
+            'attachment'=>['sometimes','file','mimes:png,jpg,jpeg'],
         ];
     }
 }

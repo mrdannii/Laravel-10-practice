@@ -9,29 +9,34 @@
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 text-gray-900 dark:text-gray-100">
-                    {{ __('Create Ticket!') }}
+                    {{ __('Update Ticket!') }}
                 </div>
 
                 <section>
 
 
-                    <form method="post" action="{{ route('ticket.store') }}" class=" space-y-6" enctype="multipart/form-data">
+                    <form method="post" action="{{ route('ticket.update', $ticket->id) }}" class=" space-y-6"
+                        enctype="multipart/form-data">
                         @csrf
+                        @method('patch')
 
                         <div class="ml-10 mr-10">
                             <x-input-label for="title" :value="__('Title')" />
                             <x-text-input id="title" name="title" type="text" class="mt-1 block w-full"
-                                  autofocus autocomplete="T" />
+                                autofocus autocomplete="T" value="{{ $ticket->title }}" />
                             <x-input-error class="mt-2" :messages="$errors->get('title')" />
                         </div>
 
                         <div class="ml-10 mr-10">
                             <x-input-label for="Description" :value="__('Description')" />
-                            <x-textarea name="description" id="description" value=""/>
+                            <x-textarea name="description" id="description" value="{{ $ticket->description }}" />
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
 
                         <div class="ml-10 mr-10">
+                            @if ($ticket->attachment)
+                                <a href="{{ '/storage/' . $ticket->attachment }}" class="text-white" target="_blank">See Attachment</a>
+                            @endif
                             <x-input-label for="attachment" :value="__('Attachment (if any)')" />
                             <x-text-input id="attachment" name="attachment" type="file" class="mt-0 block w-50"
                                 value="" autofocus autocomplete="name" />
@@ -40,7 +45,7 @@
 
 
                         <div class="flex items-center gap-4 justify-center p-5">
-                            <x-primary-button>{{ __('Create') }}</x-primary-button>
+                            <x-primary-button>{{ __('Update') }}</x-primary-button>
 
                             @if (session('status') === 'profile-updated')
                                 <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
